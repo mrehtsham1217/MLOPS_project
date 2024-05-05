@@ -80,5 +80,5 @@ class DataTransformation:
 
             return train_array, test_array
         except Exception as e:
-            logging.info(f"Customer Exception")
+            logging.info("Customer Exception")
             raise CustomException(e, sys)

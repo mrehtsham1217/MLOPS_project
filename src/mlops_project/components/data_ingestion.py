@@ -17,7 +17,8 @@ class DataIngestion:
         self.data_ingestion = DataIngestionConfig()
     def initiate_data_ingestion(self):
         try:
-            df = read_sql()
+            # df = read_sql()
+            df = pd.read_csv("artifacts/raw.csv")
             logging.info("Reading data from database")
             os.makedirs(os.path.dirname(self.data_ingestion.raw_datapath),exist_ok=True)
             # df=pd.read_csv("Notebook/data","raw.csv")

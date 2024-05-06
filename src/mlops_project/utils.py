@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import pymysql
 import pickle
 import numpy as np
+import dill
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score
 
@@ -15,6 +16,7 @@ host = os.getenv("host")
 user = os.getenv("user")
 password = os.getenv("password")
 db = os.getenv("db")
+
 
 def read_sql():
     logging.info("Reading data from database")
@@ -31,18 +33,22 @@ def read_sql():
         return df
     except Exception as e:
         # logging.info(e)
-        raise CustomException(sys,e)
-def save_model(file_path,model):
+        raise CustomException(sys, e)
+
+
+def save_model(file_path, model):
     try:
         dir_name = os.path.dirname(file_path)
-        os.makedirs(dir_name,exist_ok=True)
-        with open(file_path,'wb') as file:
-            pickle.dump(model,file)
+        os.makedirs(dir_name, exist_ok=True)
+        with open(file_path, 'wb') as file:
+            pickle.dump(model, file)
         logging.info("saving the model using pickle.dump")
     except Exception as e:
         logging.info("Customer Exception")
-        raise CustomException(sys,e)
-def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+        raise CustomException(sys, e)
+
+
+def evaluate_models(X_train, y_train, X_test, y_test, models, param):
     try:
         report = {}
 
@@ -71,3 +77,11 @@ def evaluate_models(X_train, y_train,X_test,y_test,models,param):
         return report
     except Exception as e:
         raise CustomException(e, sys)
+
+
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return dill.load(file_obj)
+    except Exception as e:
+        raise CustomException(sys,e)
